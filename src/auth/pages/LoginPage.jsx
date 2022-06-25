@@ -1,39 +1,35 @@
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Google } from "@mui/icons-material";
-import { Grid, Typography, TextField, Button, Link } from "@mui/material";
+import { Grid, Typography, TextField, Button, Link, Alert } from "@mui/material";
 import AuthLayout from "../layout/AuthLayout";
 import { useForm } from "../../hooks";
-import { checkingStatus, startGoogleSignIn } from "../../store/auth/thunks";
+import {  startGoogleSignIn, startLoginWihtEmailPassword } from "../../store/auth/thunks";
 const LoginPage = () => {
+  const dispatch = useDispatch();
+  const { status,errorMessage } = useSelector((state) => state.auth);
 
-    const dispatch = useDispatch();
-    const { status } = useSelector(state=>state.auth)
-    const { email, password, formState, onInputChange } = useForm({
-      email:'cesar@cear.com',
-      password:'123'
-    })
+  const { email, password, formState, onInputChange } = useForm({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
   
+    dispatch(startLoginWihtEmailPassword(formState));
+  };
 
-    const handleSubmit = (e)=>{
-      e.preventDefault();
-
-      console.log({email,password})
-      dispatch(checkingStatus())
-    }
-
-    const signInWithGoogle = ()=>{
-        dispatch(startGoogleSignIn() )
-        console.log("google")
-    }
+  const signInWithGoogle = () => {
+    dispatch(startGoogleSignIn());
+    console.log("google");
+  };
 
   return (
     <AuthLayout title="Login">
-      <form
-        onSubmit={ handleSubmit }
-      >
+      <form onSubmit={handleSubmit}>
         <Grid container>
           <Grid item xs={12} sx={{ my: 2 }}>
             <TextField
@@ -58,37 +54,60 @@ const LoginPage = () => {
               onChange={onInputChange}
             ></TextField>
           </Grid>
+
+          <Grid 
+            container 
+            spacing={2} 
+            sx={{ my: 2 }}
+            display = { !!errorMessage ? '' : 'none' }
+            >
+            <Grid 
+              item xs={12}
+              
+              >
+              <Alert
+                severity="error"
+              >
+                { errorMessage }
+              </Alert>
+            </Grid>
+          </Grid>
+
+
           <Grid container spacing={2} sx={{ my: 2 }}>
             <Grid item xs={12} sm={6}>
-              {
-                status === 'authenticated'
-                ?
+              {status === "authenticated" ? (
                 <Button disabled variant="contained" fullWidth type="submit">
                   Login
                 </Button>
-                :
-            <Button variant="contained" fullWidth type="submit">
-                Login
-              </Button>
-              }
-             
+              ) : (
+                <Button variant="contained" fullWidth type="submit">
+                  Login
+                </Button>
+              )}
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              {
-                 status === 'authenticated'
-                 ?
-                 <Button disabled variant="contained" fullWidth onClick={signInWithGoogle}>
-                 <Google />
-                 <Typography sx={{ ml: 1 }}>Google</Typography>
+              {status === "authenticated" ? (
+                <Button
+                  disabled
+                  variant="contained"
+                  fullWidth
+                  onClick={signInWithGoogle}
+                >
+                  <Google />
+                  <Typography sx={{ ml: 1 }}>Google</Typography>
                 </Button>
-                 :
-                 <Button variant="contained" fullWidth onClick={signInWithGoogle}>
-                 <Google />
-                 <Typography sx={{ ml: 1 }}>Google</Typography>
-               </Button>
-              }
-             
+              ) : (
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={signInWithGoogle}
+                >
+                  <Google />
+                  <Typography sx={{ ml: 1 }}>Google</Typography>
+                </Button>
+              )}
             </Grid>
           </Grid>
           <Grid container direction="row" justifyContent="end">
