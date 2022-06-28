@@ -2,8 +2,9 @@ import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import { LogoutOutlined, MenuOutlined } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { startLogout } from "../../store/auth/thunks";
+import { changeShow } from "../../store/ui/uiSlice";
 
-export const NavBar = ({ drawerWhidth }) => {
+export const NavBar = ({ drawerWidth=240 }) => {
 
     const dispatch = useDispatch();
 
@@ -11,30 +12,41 @@ export const NavBar = ({ drawerWhidth }) => {
         dispatch(startLogout())
     }
 
+    const handleShowSide = ()=>{
+      dispatch(changeShow())
+    }
+
   return (
-    <AppBar
-      position="fixed"
-      sx={{
-        width: { sm: `calc(100% - ${drawerWhidth}px)` },
-        ml: { sm: `${drawerWhidth}px` },
-      }}
+    <AppBar     
+        position='fixed'
+        sx={{ 
+            width: { sm: `calc(100% - ${ drawerWidth }px)` },
+            ml: { sm: `${ drawerWidth }px` }
+        }}
     >
       <Toolbar>
         <IconButton
-          color="inherit"
-          aria-label="open drawer"
+          color="inherit"         
           edge="start"
           sx={{
             mr: 2,
-            display: { sm: "none" },
+            
           }}
+          onClick = { ()=>handleShowSide() }
         >
           <MenuOutlined />
         </IconButton>
 
-        <Grid container direction="row" justifyContent="space-between">
-          <Typography variant="h6" noWrap component="div" alignItems="center">
-            Journal App
+        <Grid 
+          container 
+          direction="row" 
+          justifyContent="space-between">
+          <Typography 
+          variant="h6" 
+          noWrap 
+          component="div" 
+          alignItems="center">
+             Diary app
           </Typography>
 
           <IconButton 

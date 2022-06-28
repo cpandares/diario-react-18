@@ -6,14 +6,17 @@ import { Grid, Typography, TextField, Button, Link, Alert } from "@mui/material"
 import AuthLayout from "../layout/AuthLayout";
 import { useForm } from "../../hooks";
 import {  startGoogleSignIn, startLoginWihtEmailPassword } from "../../store/auth/thunks";
+
+const initial = {
+  email: "",
+  password: "",
+}
+
 const LoginPage = () => {
   const dispatch = useDispatch();
   const { status,errorMessage } = useSelector((state) => state.auth);
 
-  const { email, password, formState, onInputChange } = useForm({
-    email: "",
-    password: "",
-  });
+  const { email, password, formState, onInputChange } = useForm(initial);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +27,7 @@ const LoginPage = () => {
 
   const signInWithGoogle = () => {
     dispatch(startGoogleSignIn());
-    console.log("google");
+    
   };
 
   return (
