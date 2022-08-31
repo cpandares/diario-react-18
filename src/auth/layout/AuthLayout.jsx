@@ -13,7 +13,7 @@ const AuthLayout = ({ children, title = "" }) => {
         backgroundColor: "primary.main",
         padding: 4,
       }}
-      className="animate__animated animate__fadeIn "
+      className="animate__animated animate__fadeIn"
     >
       <Grid
         item

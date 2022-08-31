@@ -65,8 +65,7 @@ const LoginPage = () => {
             display = { !!errorMessage ? '' : 'none' }
             >
             <Grid 
-              item xs={12}
-              
+              item xs={12}              
               >
               <Alert
                 severity="error"
